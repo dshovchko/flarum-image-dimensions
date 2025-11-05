@@ -1,0 +1,29 @@
+{
+    "name": "dshovchko/flarum-img-checker",
+    "description": "Checking images in posts for size attributes. Finding and fixing them.",
+    "type": "flarum-extension",
+    "require": {
+        "flarum/core": "^1.0.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "DShovchko\\ImagesChecker\\": "src/",
+            "s9e\\TextFormatter\\Plugins\\Autoimage\\": "overrides/Autoimage",
+            "s9e\\TextFormatter\\Plugins\\Litedown\\Parser\\Passes\\": "overrides/Litedown/Parser/Passes"
+        },
+        "exclude-from-classmap": [
+            "vendor/s9e/text-formatter/src/Plugins/Autoimage/Parser.php",
+            "vendor/s9e/text-formatter/src/Plugins/Litedown/Parser/Passes/Images.php"
+        ]
+    },
+    "extra": {
+        "flarum-extension": {
+            "title": "Image checker",
+            "icon": {
+                "name": "fas fa-image",
+                "backgroundColor": "#238c59",
+                "color": "#fff"
+            }
+        }
+    }
+}
