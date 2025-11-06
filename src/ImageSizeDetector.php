@@ -14,25 +14,31 @@ class ImageSizeDetector
             $height = null;
             
             try {
-                // Create context with timeout
+                // Create context with timeout for both HTTP and HTTPS
                 $opts = [
                     'http' => [
+                        'timeout' => self::$timeout,
+                        'user_agent' => 'Flarum Image Dimensions Extension'
+                    ],
+                    'https' => [
                         'timeout' => self::$timeout,
                         'user_agent' => 'Flarum Image Dimensions Extension'
                     ]
                 ];
                 $context = stream_context_create($opts);
                 
-                // Download image data with timeout
-                $imageData = file_get_contents($src, false, $context);
+                // Use stream wrapper to pass context to getimagesize
+                $wrappedSrc = $src;
+                if (strpos($src, 'http') === 0) {
+                    stream_context_set_default($opts);
+                }
                 
-                if ($imageData !== false) {
-                    $result = getimagesizefromstring($imageData);
-                    
-                    if ($result !== false) {
-                        $width = $result[0];
-                        $height = $result[1];
-                    }
+                // Get image size from header only (memory efficient)
+                $result = getimagesize($wrappedSrc);
+                
+                if ($result !== false) {
+                    $width = $result[0];
+                    $height = $result[1];
                 }
             } catch (\Throwable $e) {
                 // Ignore errors, return null
