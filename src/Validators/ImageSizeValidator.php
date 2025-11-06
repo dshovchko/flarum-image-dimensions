@@ -36,10 +36,10 @@ class ImageSizeValidator
     protected function isValidImageUrl(string $url)
     {
         $context = stream_context_create([
-            'http' => array(
+            'http' => [
                 'method' => 'HEAD'
-                )
-            ]);
+            ]
+        ]);
         $headers = get_headers($url, true, $context);
         if ($headers === false) {
             throw new \Exception(sprintf('The image URL (%s) is invalid', $url));

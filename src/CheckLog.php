@@ -64,7 +64,7 @@ class CheckLog
         return self::$records;
     }
 
-    public static function sprintf(array $record, bool $formatted = TRUE)
+    public static function sprintf(array $record, bool $formatted = true)
     {
         $message = sprintf('discussion %s: ', $record['id']);
         if (!count($record['fixed']) && !count($record['wrong']) && !count($record['invalid'])) $message .= ' There are no images in posts or all images have size attributes.';
@@ -89,6 +89,6 @@ class CheckLog
 
     public static function sprint(array $record)
     {
-        return self::sprintf($record, FALSE);
+        return self::sprintf($record, false);
     }
 }

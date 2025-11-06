@@ -27,9 +27,10 @@ class Parser extends AbstractParser
 			$imageTag = $this->parser->addTagPair($tagName, $m[0][1], 0, $m[0][1] + strlen($m[0][0]), 0, $prio);
 			$src = $m[0][0];
 			$imageTag->setAttribute($attrName, $src);
-			if (isset($src)) {
-				$imageTag->setAttribute('height', ImageSizeDetector::getHeight($src));
-				$imageTag->setAttribute('width', ImageSizeDetector::getWidth($src));
+			[$width, $height] = ImageSizeDetector::getSizes($src);
+			if ($width && $height) {
+				$imageTag->setAttribute('width', $width);
+				$imageTag->setAttribute('height', $height);
 			}
 		}
 	}

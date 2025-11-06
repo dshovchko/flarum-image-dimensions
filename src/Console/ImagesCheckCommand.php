@@ -134,10 +134,8 @@ class ImagesCheckCommand extends AbstractCommand
         // TODO: Implement actual content fixing logic
         // Currently this method doesn't modify content
         // Need to parse XML and add missing width/height attributes
-        $content = $post->content;
-        $post->content = $content;
-        $post->updateQuietly();
-        return true;
+        // Returning false until implemented
+        return false;
     }
 
     protected function shouldFix()

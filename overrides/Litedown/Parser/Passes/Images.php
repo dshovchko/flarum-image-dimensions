@@ -51,8 +51,11 @@ class Images extends AbstractPass
 		$tag->setAttribute('alt', $this->text->decode($alt));
 
 		if (isset($linkInfo)) {
-			$tag->setAttribute('height', ImageSizeDetector::getHeight($linkInfo));
-			$tag->setAttribute('width', ImageSizeDetector::getWidth($linkInfo));
+			[$width, $height] = ImageSizeDetector::getSizes($linkInfo);
+			if ($width && $height) {
+				$tag->setAttribute('width', $width);
+				$tag->setAttribute('height', $height);
+			}
 		}
 
 		// Overwrite the markup

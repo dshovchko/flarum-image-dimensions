@@ -38,13 +38,19 @@ class ImageSizeDetector
                     ]
                 ];
                 
-                // Set default context for HTTP/HTTPS requests
-                if (str_starts_with($src, 'http')) {
-                    stream_context_set_default($opts);
-                }
-                
                 // Get image size from header only (memory efficient)
-                $result = getimagesize($src);
+                // For HTTP/HTTPS, use file_get_contents with context as getimagesize doesn't support context parameter
+                if (str_starts_with($src, 'http')) {
+                    $context = stream_context_create($opts);
+                    $imageData = @file_get_contents($src, false, $context);
+                    if ($imageData !== false) {
+                        $result = getimagesizefromstring($imageData);
+                    } else {
+                        $result = false;
+                    }
+                } else {
+                    $result = getimagesize($src);
+                }
                 
                 if ($result !== false) {
                     $width = $result[0];
