@@ -62,7 +62,7 @@ class ImagesCheckCommand extends AbstractCommand
         if ($this->input->getOption('post')) {
             $id = $this->input->getOption('post');
             $post = CommentPost::find($id);
-            if ($post === NULL) {
+            if ($post === null) {
                 $this->error(sprintf('comment post with id=%s not found', $id));
                 return;
             }
@@ -74,7 +74,7 @@ class ImagesCheckCommand extends AbstractCommand
         elseif ($this->input->getOption('discussion')) {
             $id = $this->input->getOption('discussion');
             $discussion = Discussion::find($id);
-            if ($discussion === NULL) {
+            if ($discussion === null) {
                 $this->error(sprintf('discussion with id=%s not found', $id));
                 return;
             }
@@ -91,9 +91,13 @@ class ImagesCheckCommand extends AbstractCommand
 
     protected function processDiscussion(Discussion $discussion)
     {
-        if ($discussion === NULL) return;
-        foreach($discussion->posts as $post) {
-            if ($post->type !== 'comment') continue;
+        if ($discussion === null) {
+            return;
+        }
+        foreach ($discussion->posts as $post) {
+            if ($post->type !== 'comment') {
+                continue;
+            }
             $this->processCommentPost($post);
         }
         $this->consoleReport();
@@ -124,11 +128,16 @@ class ImagesCheckCommand extends AbstractCommand
 
     protected function fixPost(CommentPost $post)
     {
-        if (!$this->shouldFix()) return FALSE;
+        if (!$this->shouldFix()) {
+            return false;
+        }
+        // TODO: Implement actual content fixing logic
+        // Currently this method doesn't modify content
+        // Need to parse XML and add missing width/height attributes
         $content = $post->content;
         $post->content = $content;
         $post->updateQuietly();
-        return TRUE;
+        return true;
     }
 
     protected function shouldFix()
@@ -138,18 +147,20 @@ class ImagesCheckCommand extends AbstractCommand
 
     protected function consoleReport()
     {
-        foreach(CheckLog::getLastMessages() as $message) {
+        foreach (CheckLog::getLastMessages() as $message) {
             $this->info(CheckLog::sprintf($message));
         }
     }
 
     protected function mailReport()
     {
-        if (!$this->input->getOption('mailto')) return;
+        if (!$this->input->getOption('mailto')) {
+            return;
+        }
         $email = $this->input->getOption('mailto');
 
         $body = '';
-        foreach(CheckLog::getMessages() as $message) {
+        foreach (CheckLog::getMessages() as $message) {
             $body .= CheckLog::sprint($message);
         }
 
