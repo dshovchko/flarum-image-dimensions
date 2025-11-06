@@ -14,7 +14,7 @@ class ImageSizeDetector
             $height = null;
             
             try {
-                // Створюємо контекст з timeout
+                // Create context with timeout
                 $context = stream_context_create([
                     'http' => [
                         'timeout' => self::$timeout,
@@ -22,14 +22,20 @@ class ImageSizeDetector
                     ]
                 ]);
                 
-                $result = @getimagesize($src, $context);
+                // Set default stream context and restore after
+                $prevContext = stream_context_get_default();
+                stream_context_set_default($context);
+                
+                $result = getimagesize($src);
+                
+                stream_context_set_default($prevContext);
                 
                 if ($result !== false) {
                     $width = $result[0];
                     $height = $result[1];
                 }
-            } catch (\Exception $e) {
-                // Ігноруємо помилки, повертаємо null
+            } catch (\Throwable $e) {
+                // Ignore errors, return null
             }
         
             self::$cache[$src] = [$width, $height];
