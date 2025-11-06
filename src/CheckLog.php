@@ -67,7 +67,9 @@ class CheckLog
     public static function sprintf(array $record, bool $formatted = true)
     {
         $message = sprintf('discussion %s: ', $record['id']);
-        if (!count($record['fixed']) && !count($record['wrong']) && !count($record['invalid'])) $message .= ' There are no images in posts or all images have size attributes.';
+        if (!count($record['fixed']) && !count($record['wrong']) && !count($record['invalid'])) {
+            $message .= ' There are no images in posts or all images have size attributes.';
+        }
         else {
             if (count($record['fixed'])) {
                 $message .= sprintf(' fixed images in posts (%s)', implode(' ', $record['fixed']));

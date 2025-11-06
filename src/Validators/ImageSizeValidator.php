@@ -30,7 +30,7 @@ class ImageSizeValidator
         if ($el->hasAttribute('src')) {
             return true;
         }
-        throw new \Exception('The src attribute is absent');
+        throw new \Exception(sprintf('The src attribute is absent in <%s> element', $el->tagName));
     }
 
     protected function isValidImageUrl(string $url)
@@ -44,7 +44,11 @@ class ImageSizeValidator
         if ($headers === false) {
             throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
         }
-        $status = explode(' ', $headers[0])[1];
+        $statusParts = explode(' ', $headers[0]);
+        if (count($statusParts) < 2 || !is_numeric($statusParts[1])) {
+            throw new \Exception(sprintf('Invalid HTTP status line for image URL (%s): %s', $url, $headers[0]));
+        }
+        $status = (int)$statusParts[1];
         if ($status >= 400) {
             throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
         }
@@ -77,7 +81,7 @@ class ImageSizeValidator
     {
         $dom = new DOMDocument();
         $dom->loadXML($content);
-        $nodes = $dom->getElementsByTagName('IMG');
+        $nodes = $dom->getElementsByTagName('img');
         $result = true;
         foreach ($nodes as $node) {
             $result = $result && ($strictMode ? $this->checkImageStrict($node) : $this->checkImage($node));
