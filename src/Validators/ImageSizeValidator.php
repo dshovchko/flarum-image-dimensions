@@ -27,7 +27,9 @@ class ImageSizeValidator
 
     protected function hasSrc(DOMElement $el)
     {
-        if ($el->hasAttribute('src')) return TRUE;
+        if ($el->hasAttribute('src')) {
+            return true;
+        }
         throw new \Exception('The src attribute is absent');
     }
 
@@ -39,10 +41,14 @@ class ImageSizeValidator
                 )
             ]);
         $headers = get_headers($url, true, $context);
-        if ($headers === FALSE) throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
+        if ($headers === false) {
+            throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
+        }
         $status = explode(' ', $headers[0])[1];
-        if ($status >= 400) throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
-        return TRUE;
+        if ($status >= 400) {
+            throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
+        }
+        return true;
     }
 
     public function hasHeight(DOMElement $el)
@@ -67,23 +73,30 @@ class ImageSizeValidator
         return $this->hasWidth($el) && $el->getAttribute('width') == $width;
     }
 
-    public function checkContent(string $content, bool $strictMode) {
+    public function checkContent(string $content, bool $strictMode)
+    {
         $dom = new DOMDocument();
         $dom->loadXML($content);
         $nodes = $dom->getElementsByTagName('IMG');
-        $result = TRUE;
-        foreach($nodes as $node) {
+        $result = true;
+        foreach ($nodes as $node) {
             $result = $result && ($strictMode ? $this->checkImageStrict($node) : $this->checkImage($node));
         }
         return $result;
     }
 
-    protected function checkImage(DOMElement $el) {
-        if ($this->hasSrc($el) && $this->hasHeight($el) && $this->hasWidth($el)) return TRUE;
-        return $this->isValidImageUrl($el->getAttribute('src')) && FALSE;
+    protected function checkImage(DOMElement $el)
+    {
+        if ($this->hasSrc($el) && $this->hasHeight($el) && $this->hasWidth($el)) {
+            return true;
+        }
+        // Validate URL and return false
+        $this->isValidImageUrl($el->getAttribute('src'));
+        return false;
     }
 
-    protected function checkImageStrict(DOMElement $el) {
+    protected function checkImageStrict(DOMElement $el)
+    {
         return $this->hasSrc($el)
             && $this->isValidImageUrl($el->getAttribute('src'))
             && $this->hasExactHeight($el)
