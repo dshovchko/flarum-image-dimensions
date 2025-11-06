@@ -63,7 +63,7 @@ class ImageSizeValidator
     protected function hasExactHeight(DOMElement $el)
     {
         $height = ImageSizeDetector::getHeight($el->getAttribute('src'));
-        return $this->hasHeight($el) && $el->getAttribute('height') == $height;
+        return $this->hasHeight($el) && (int)$el->getAttribute('height') === $height;
     }
 
     public function hasWidth(DOMElement $el)
@@ -74,7 +74,7 @@ class ImageSizeValidator
     protected function hasExactWidth(DOMElement $el)
     {
         $width = ImageSizeDetector::getWidth($el->getAttribute('src'));
-        return $this->hasWidth($el) && $el->getAttribute('width') == $width;
+        return $this->hasWidth($el) && (int)$el->getAttribute('width') === $width;
     }
 
     public function checkContent(string $content, bool $strictMode)

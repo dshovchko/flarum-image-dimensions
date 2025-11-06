@@ -80,10 +80,11 @@ class ImagesCheckCommand extends AbstractCommand
             }
             $this->processDiscussion($discussion);
         } else {
-            $discussions = Discussion::all();
-            foreach($discussions as $discussion) {
-                $this->processDiscussion($discussion);
-            }
+            Discussion::chunk(100, function ($discussions) {
+                foreach ($discussions as $discussion) {
+                    $this->processDiscussion($discussion);
+                }
+            });
         }
 
         $this->mailReport();
