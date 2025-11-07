@@ -10,7 +10,6 @@ A Flarum extension that automatically adds `width` and `height` attributes to im
 
 - 🚀 Automatically detects and adds image dimensions
 - ⚡ Adds `loading="lazy"` attribute for better performance
-- 🖼️ AVIF image format support (v1.1.0+)
 - 🔍 Console command to check and fix existing posts
 - 📧 Email reports for batch operations
 - ✅ Supports BBCode, Markdown, and auto-linked images
@@ -58,7 +57,8 @@ php flarum images:check --mailto=admin@example.com
 - GIF
 - WebP
 - SVG/SVGZ
-- AVIF (v1.1.0+, dimensions require PHP 8.2+)
+
+**For AVIF support:** Install [dshovchko/flarum-avif-support](https://packagist.org/packages/dshovchko/flarum-avif-support) extension (requires PHP 8.2+ for dimensions)
 
 ## Why Image Dimensions Matter
 
@@ -71,7 +71,7 @@ Adding `width` and `height` attributes to images:
 ## Requirements
 
 - Flarum ^1.0
-- PHP 8.1+ (PHP 8.2+ recommended for full AVIF support)
+- PHP 7.4+
 
 ## Links
 
