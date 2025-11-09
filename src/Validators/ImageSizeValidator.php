@@ -162,9 +162,10 @@ class ImageSizeValidator
 
     protected function checkImageDefault(DOMElement $el)
     {
-        if ($this->hasSrc($el) && $this->hasHeight($el) && $this->hasWidth($el)) {
+        if ($this->checkImageFast($el)) {
             return true;
         }
+
         // Validate URL and return false
         $this->isValidImageUrl($el->getAttribute('src'));
         return false;
