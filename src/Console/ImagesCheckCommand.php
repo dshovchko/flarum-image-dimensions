@@ -229,12 +229,34 @@ class ImagesCheckCommand extends AbstractCommand
         }
         $emails = $this->input->getOption('mailto');
 
-        $body = '';
-        foreach (CheckLog::getMessages() as $message) {
+        $messages = CheckLog::getMessages();
+        $total = count($messages);
+        $withIssues = 0;
+        $ok = 0;
+        
+        foreach ($messages as $record) {
+            $hasIssues = !empty($record['wrong']) || !empty($record['invalid']) || !empty($record['errors']);
+            if ($hasIssues) {
+                $withIssues++;
+            } else {
+                $ok++;
+            }
+        }
+        
+        $summary = sprintf(
+            "Image Dimensions Check Report\n\nTotal discussions: %d\n✅ OK: %d\n⚠️ Issues: %d\n%s\n",
+            $total,
+            $ok,
+            $withIssues,
+            str_repeat('=', 50)
+        );
+        
+        $body = $summary;
+        foreach ($messages as $message) {
             $body .= CheckLog::sprint($message);
         }
 
-        $subject = 'Images checker report';
+        $subject = sprintf('Images checker report (%d issues)', $withIssues);
         
         foreach (array_map('trim', explode(',', $emails)) as $email) {
             if (!empty($email)) {

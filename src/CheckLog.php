@@ -114,8 +114,11 @@ class CheckLog
 
     public static function sprintf(array $record, bool $formatted = true)
     {
+        $hasIssues = !empty($record['wrong']) || !empty($record['invalid']) || !empty($record['errors']);
+        $emoji = $hasIssues ? '⚠️' : '✅';
+        
         if (!$formatted && self::$baseUrl) {
-            $message = sprintf("\n=== Discussion %s ===\n%s/d/%s\n", $record['id'], self::$baseUrl, $record['id']);
+            $message = sprintf("\n%s Discussion %s\n%s/d/%s\n", $emoji, $record['id'], self::$baseUrl, $record['id']);
         } else {
             $message = sprintf('discussion %s: ', $record['id']);
         }
