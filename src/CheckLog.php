@@ -8,6 +8,7 @@ class CheckLog
 {
     protected static $lastBatch = [];
     protected static $records = [];
+    protected static $baseUrl = null;
 
     public static function reset()
     {
@@ -105,9 +106,18 @@ class CheckLog
         return self::$records;
     }
 
+    public static function setBaseUrl(string $url)
+    {
+        self::$baseUrl = rtrim($url, '/');
+    }
+
     public static function sprintf(array $record, bool $formatted = true)
     {
-        $message = sprintf('discussion %s: ', $record['id']);
+        $discussionLink = $record['id'];
+        if (!$formatted && self::$baseUrl) {
+            $discussionLink = self::$baseUrl . '/d/' . $record['id'];
+        }
+        $message = sprintf('discussion %s: ', $discussionLink);
         if (empty($record['fixed']) && empty($record['wrong']) && empty($record['invalid']) && empty($record['checked'])) {
             $message .= ' There are no images in posts.';
         }

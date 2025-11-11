@@ -9,12 +9,9 @@ use Illuminate\Contracts\Queue\Queue;
 
 class ScheduledImagesCheckCommand extends ImagesCheckCommand
 {
-    protected $settings;
-
     public function __construct(ImageSizeValidator $validator, Queue $queue, SettingsRepositoryInterface $settings)
     {
-        parent::__construct($validator, $queue);
-        $this->settings = $settings;
+        parent::__construct($validator, $queue, $settings);
     }
 
     protected function configure()

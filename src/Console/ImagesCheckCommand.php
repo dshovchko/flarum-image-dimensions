@@ -13,6 +13,7 @@ use Flarum\Console\AbstractCommand;
 use Flarum\Mail\Job\SendRawEmailJob;
 use Flarum\Post\CommentPost;
 use Flarum\Discussion\Discussion;
+use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Contracts\Queue\Queue;
 use Symfony\Component\Console\Input\InputOption;
 use DShovchko\ImagesChecker\Validators\ImageSizeValidator;
@@ -22,14 +23,13 @@ class ImagesCheckCommand extends AbstractCommand
 {
     protected $queue;
     protected $validator;
-    /**
-     * @param ImageSizeValidator $validator
-     * @param Queue $queue
-     */
-    public function __construct(ImageSizeValidator $validator, Queue $queue)
+    protected $settings;
+
+    public function __construct(ImageSizeValidator $validator, Queue $queue, SettingsRepositoryInterface $settings)
     {
         $this->queue = $queue;
         $this->validator = $validator;
+        $this->settings = $settings;
 
         parent::__construct();
     }
@@ -63,6 +63,10 @@ class ImagesCheckCommand extends AbstractCommand
     protected function process()
     {
         CheckLog::reset();
+        $url = $this->settings->get('url');
+        if ($url) {
+            CheckLog::setBaseUrl($url);
+        }
 
         $this->configureValidatorMode();
 
