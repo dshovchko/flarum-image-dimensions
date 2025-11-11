@@ -19,9 +19,9 @@ class ScheduledImagesCheckCommand extends ImagesCheckCommand
 
     protected function configure()
     {
-        $this
-            ->setName('image-dimensions:scheduled-check')
-            ->setDescription('Scheduled automatic check of post images (configured via admin panel)');
+        parent::configure();
+        $this->setName('image-dimensions:scheduled-check')
+             ->setDescription('Scheduled automatic check of post images (configured via admin panel)');
     }
 
     protected function fire()
@@ -33,10 +33,13 @@ class ScheduledImagesCheckCommand extends ImagesCheckCommand
 
         $this->info('Running scheduled image dimensions check...');
         
-        // Override input options with settings
         $this->input->setOption('all', true);
         $this->input->setOption('chunk', $this->getChunkSize());
-        $this->input->setOption('mailto', $this->getEmailRecipients());
+        
+        $emails = $this->getEmailRecipients();
+        if ($emails) {
+            $this->input->setOption('mailto', $emails);
+        }
         
         $mode = $this->getMode();
         if ($mode === 'fast') {
@@ -61,7 +64,8 @@ class ScheduledImagesCheckCommand extends ImagesCheckCommand
 
     public function getChunkSize(): int
     {
-        return (int) $this->settings->get('dshovchko-image-dimensions.scheduled_chunk', 100);
+        $chunk = $this->settings->get('dshovchko-image-dimensions.scheduled_chunk', '100');
+        return max(1, (int) $chunk);
     }
 
     public function getEmailRecipients(): string

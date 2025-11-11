@@ -2,7 +2,7 @@ import app from 'flarum/admin/app';
 
 app.initializers.add('dshovchko/flarum-image-dimensions', () => {
   app.extensionData
-    .for('dshovchko-flarum-image-dimensions')
+    .for('dshovchko-image-dimensions')
     .registerSetting({
       setting: 'dshovchko-image-dimensions.scheduled_enabled',
       type: 'boolean',
