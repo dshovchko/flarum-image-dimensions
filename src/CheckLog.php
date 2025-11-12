@@ -6,8 +6,8 @@ use Flarum\Post\CommentPost;
 
 class CheckLog
 {
-    protected const EMOJI_OK = '\u2705';
-    protected const EMOJI_WARNING = '\u26a0\ufe0f';
+    protected const EMOJI_OK = '✅';
+    protected const EMOJI_WARNING = '⚠️';
     
     protected static $lastBatch = [];
     protected static $records = [];

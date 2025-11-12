@@ -265,8 +265,13 @@ class ImagesCheckCommand extends AbstractCommand
         $subject = sprintf('Images checker report - %s (%d issues)', (new \DateTime())->format('Y-m-d'), $withIssues);
         
         foreach (array_map('trim', explode(',', $emails)) as $email) {
-            if (!empty($email) && filter_var($email, FILTER_VALIDATE_EMAIL)) {
+            if (empty($email)) {
+                continue;
+            }
+            if (filter_var($email, FILTER_VALIDATE_EMAIL)) {
                 $this->queue->push(new SendRawEmailJob($email, $subject, $body));
+            } else {
+                $this->info(sprintf('Invalid email address skipped: %s', $email));
             }
         }
     }
