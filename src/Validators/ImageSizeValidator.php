@@ -53,10 +53,11 @@ class ImageSizeValidator
     {
         $context = stream_context_create([
             'http' => [
-                'method' => 'HEAD'
+                'method' => 'HEAD',
+                'timeout' => 5
             ]
         ]);
-        $headers = get_headers($url, true, $context);
+        $headers = @get_headers($url, true, $context);
         if ($headers === false) {
             throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
         }
@@ -65,7 +66,7 @@ class ImageSizeValidator
             throw new \Exception(sprintf('Invalid HTTP status line for image URL (%s): %s', $url, $headers[0]));
         }
         $status = (int)$statusParts[1];
-        if ($status >= 400) {
+        if ($status >= 400 && $status !== 403) {
             throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
         }
         return true;
