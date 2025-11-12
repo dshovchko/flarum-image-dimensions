@@ -84,6 +84,9 @@ class ScheduledImagesCheckCommand extends ImagesCheckCommand
             case 'monthly':
                 $event->monthly();
                 break;
+            default:
+                $event->weekly();
+                break;
         }
     }
 }

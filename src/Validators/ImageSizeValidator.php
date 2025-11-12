@@ -70,6 +70,8 @@ class ImageSizeValidator
             throw new \Exception(sprintf('Invalid HTTP status line for image URL (%s): %s', $url, $headers[0]));
         }
         $status = (int)$statusParts[1];
+        // 403 may occur due to anti-bot measures, 429 indicates rate limiting
+        // Both don't necessarily mean the image is invalid
         if ($status >= 400 && $status !== 403 && $status !== 429) {
             throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
         }
