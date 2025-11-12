@@ -57,7 +57,11 @@ class ImageSizeValidator
                 'timeout' => 5
             ]
         ]);
-        $headers = @get_headers($url, true, $context);
+        
+        set_error_handler(function() {});
+        $headers = get_headers($url, true, $context);
+        restore_error_handler();
+        
         if ($headers === false) {
             throw new \Exception(sprintf('The image URL (%s) is invalid', $url));
         }
