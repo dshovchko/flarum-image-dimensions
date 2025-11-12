@@ -2,6 +2,7 @@
 
 namespace DShovchko\ImagesChecker\Console;
 
+use Flarum\Foundation\Config;
 use Flarum\Settings\SettingsRepositoryInterface;
 use Illuminate\Console\Scheduling\Event;
 use DShovchko\ImagesChecker\Validators\ImageSizeValidator;
@@ -9,7 +10,7 @@ use Illuminate\Contracts\Queue\Queue;
 
 class ScheduledImagesCheckCommand extends ImagesCheckCommand
 {
-    public function __construct(ImageSizeValidator $validator, Queue $queue, SettingsRepositoryInterface $settings, \Flarum\Foundation\Config $config)
+    public function __construct(ImageSizeValidator $validator, Queue $queue, SettingsRepositoryInterface $settings, Config $config)
     {
         parent::__construct($validator, $queue, $settings, $config);
     }

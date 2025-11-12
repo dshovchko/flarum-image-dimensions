@@ -6,6 +6,9 @@ use Flarum\Post\CommentPost;
 
 class CheckLog
 {
+    protected const EMOJI_OK = '\u2705';
+    protected const EMOJI_WARNING = '\u26a0\ufe0f';
+    
     protected static $lastBatch = [];
     protected static $records = [];
     protected static $baseUrl = null;
@@ -116,7 +119,7 @@ class CheckLog
     {
         $id = $record['id'];
         $hasIssues = !empty($record['wrong']) || !empty($record['invalid']) || !empty($record['errors']);
-        $emoji = $hasIssues ? '⚠️' : '✅';
+        $emoji = $hasIssues ? self::EMOJI_WARNING : self::EMOJI_OK;
         
         if (!$formatted && self::$baseUrl) {
             $message = sprintf("\n%s Discussion %s\n%s/d/%s\n", $emoji, $id, self::$baseUrl, $id);

@@ -27,6 +27,12 @@ class ImagesCheckCommand extends AbstractCommand
     protected $settings;
     protected $config;
 
+    /**
+     * @param ImageSizeValidator $validator
+     * @param Queue $queue
+     * @param SettingsRepositoryInterface $settings
+     * @param Config $config
+     */
     public function __construct(ImageSizeValidator $validator, Queue $queue, SettingsRepositoryInterface $settings, Config $config)
     {
         $this->queue = $queue;
