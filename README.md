@@ -70,8 +70,10 @@ php flarum image-dimensions:check --discussion=123 --full
 # Email the report
 php flarum image-dimensions:check --all --mailto=admin@example.com
 
-# Automatically fix (upcoming feature)
+# Automatically fix images without dimensions
 php flarum image-dimensions:check --discussion=123 --fix
+php flarum image-dimensions:check --post=456 --fix
+php flarum image-dimensions:check --all --fix --chunk=100
 ```
 
 > ℹ️  The command requires one of `--discussion=<id>`, `--post=<id>`, or `--all`.

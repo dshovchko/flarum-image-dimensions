@@ -179,11 +179,17 @@ class ImagesCheckCommand extends AbstractCommand
         if (!$this->shouldFix()) {
             return false;
         }
-        // TODO: Implement actual content fixing logic
-        // Currently this method doesn't modify content
-        // Need to parse XML and add missing width/height attributes
-        // Returning false until implemented
-        return false;
+        
+        try {
+            // Force re-parse by touching the content
+            // This triggers TextFormatter with our overrides that add dimensions
+            $post->content = $post->content;
+            $post->save();
+            return true;
+        } catch (\Exception $e) {
+            $this->error(sprintf('Failed to fix post %d: %s', $post->id, $e->getMessage()));
+            return false;
+        }
     }
 
     protected function shouldFix()
