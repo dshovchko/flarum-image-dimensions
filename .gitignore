@@ -5,6 +5,4 @@ composer.lock
 *.swp
 *.swo
 *~
-/js/node_modules/
-/js/dist/
-/js/package-lock.json
+

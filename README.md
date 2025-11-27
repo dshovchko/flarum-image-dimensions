@@ -107,6 +107,15 @@ Adding `width` and `height` attributes to images:
 - [Packagist](https://packagist.org/packages/dshovchko/flarum-image-dimensions)
 - [Flarum Community](https://discuss.flarum.org)
 
+## Release Checklist
+
+1. `cd js && npm ci`
+2. `npm run build`
+3. `git add js/dist` to include the compiled admin/forum bundles
+4. Update `CHANGELOG.md` with the version notes
+5. Commit, tag (e.g. `v1.5.1`), and push branch + tag to GitHub
+6. Publish the GitHub release and ensure Packagist receives the tag
+
 ## License
 
 [MIT](https://github.com/dshovchko/flarum-image-dimensions/blob/main/LICENSE)

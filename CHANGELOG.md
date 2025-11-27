@@ -1,5 +1,9 @@
 # Changelog
 
+## [1.5.1] - 2025-11-27
+- Include compiled admin/forum JS bundles in tagged releases
+- Document release checklist to avoid missing assets
+
 ## [1.5.0] - 2025-11-12
 - Implemented `--fix` option to automatically add missing image dimensions
 - Fix works by re-saving posts to trigger TextFormatter overrides that add dimensions
